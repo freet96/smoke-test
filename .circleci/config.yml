@@ -18,9 +18,30 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
 
+  # smoke test example
+  smoke_test:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - run: apk add --update curl
+      - run: 
+          name: smoke test
+          command: |
+            URL="https://blog.udacity.com/"
+            #Test if website exists
+            
+            if curl -s --head ${URL}
+            then
+              return 0
+            else 
+              return 1
+            fi
+
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
+      #- say-hello
+      - smoke_test
